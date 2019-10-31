@@ -1,7 +1,7 @@
 ## Git的三种状态
 Git有三种状态、你的文件可能处于其中之一：**已提交（committed）、已修改（modified）和已暂存（staged）**。**已提交**表示数据已经安全的保存在本地数据库中。**已修改**表示修改了文件，但还没有保存到数据库中。**已暂存**表示对一个已修改文件的当前版本做了标记，使之包含在下一次提交的快照中。由此引入Git项目的三个工作区域的概念：Git仓库、工作目录以及暂存区域。
 
-![2](https://github.com/XingYu9902/learngit/blob/master/images/Snipaste_2019-10-31_18-03-08.png)
+![工作区域](https://github.com/XingYu9902/learngit/blob/master/images/Snipaste_2019-10-31_18-03-08.png)
 
 >Git仓库目录时Git用来保存项目的源数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，拷贝的就是这里的数据。
 
