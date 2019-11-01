@@ -148,7 +148,7 @@ git log命令显示从最近到最远的提交日志,如果觉得显示的信息
 
 >$ git checkout 其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。
 
->注意：从来没有被添加到版本库就被删除的文件，是无法恢复的！ 
+>**注意：从来没有被添加到版本库就被删除的文件，是无法恢复的！ **
 
 ### 小结
 1.如果你用的rm删除文件，那就相当于只删除了工作区的文件，如果想要恢复，直接用git checkout -- <file>就可以 
@@ -165,5 +165,96 @@ git log命令显示从最近到最远的提交日志,如果觉得显示的信息
 
 >test.txt （2行文字）——add——commit——修改增加test.txt的内容（3行文字）——rm——checkout——这样删除了你会获得test.txt（2行文字）
 
->于是，你永远不用担心误删，但是要小心，你只能恢复文件到最新版本，你会丢失最近一次提交后你修改的内容。理解了吗？
+>于是，你永远不用担心误删，但是要小心，你只能恢复文件到最新版本，你会丢失最近一次提交后你修改的内容。
+
+# 远程仓库
+与Github建立联系：
+由于你的本地Git仓库和GitHub仓库之间的传输是通过SSH加密的，所以，需要一点设置：
+第1步：创建SSH Key。在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：
+
+>$ ssh-keygen -t rsa -C "youremail@example.com"
+
+你需要把邮件地址换成你自己的邮件地址，然后一路回车，使用默认值即可，由于这个Key也不是用于军事目的，所以也无需设置密码。
+
+如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。第2步：登陆GitHub，打开“Account settings”，“SSH Keys”页面：然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容
+
+### 小结
+创建SSH key命令：
+
+>$ ssh-keygen -t rsa -C "youremail@example.com"
+
+## 添加远程库
+
+现在的情景是，你已经在本地创建了一个Git仓库后，又想在GitHub创建一个Git仓库，并且让这两个仓库进行远程同步，这样，GitHub上的仓库既可以作为备份，又可以让其他人通过该仓库来协作，真是一举多得。
+首先，登录Github，然后创建一个新的仓库，仓库名字填入learngit，这样我们就创建了一个新的仓库。
+目前，在GitHub上的这个learngit仓库还是空的，GitHub告诉我们，可以从这个仓库克隆出新的仓库，也可以把一个已有的本地仓库与之关联，然后，把本地仓库的内容推送到GitHub仓库。
+现在，我们根据GitHub的提示，在本地的learngit仓库下运行命令：
+
+>$ git remote add origin git@github.com:XingYu9902/learngit.git
+
+添加后，**远程库的名字就是origin**，这是Git默认的叫法，也可以改成别的，但是origin这个名字一看就知道是远程库。
+
+## 推送到远程仓库
+
+- 第一次推送到Github
+
+>$ git push -u origin master
+
+- 后续推送到Github
+
+>$ git push origin master 不再使用参数-u
+
+## 从远程库克隆
+
+>$ git clone git@github.com:username/repositoryname.git
+
+或者使用https
+
+# 分支管理
+
+分支在实际中有什么用呢？假设你准备开发一个新功能，但是需要两周才能完成，第一周你写了50%的代码，如果立刻提交，由于代码还没写完，不完整的代码库会导致别人不能干活了。如果等代码全部写完再一次提交，又存在丢失每天进度的巨大风险。
+现在有了分支，就不用怕了。你创建了一个属于你自己的分支，别人看不到，还继续在原来的分支上正常工作，而你在自己的分支上干活，想提交就提交，直到开发完毕后，再一次性合并到原来的分支上，这样，既安全，又不影响别人工作。
+
+## 查看分支
+
+>$ git branch
+
+## 创建分支
+
+>$ git branch <branch-name>
+  
+## 切换分支
+
+>$ git branch <branch-name>
+  
+## 创建+切换分支
+
+>$ git checkout -b <branch-name>
+  
+  ## 合并某分支到当前分支
+  
+  >$ git merge <branch-name>  快速合并
+  
+  ## 普通模式合并分支
+  
+  >$ git merge --no-ff -m "description" <branch-name>
+  
+  >通常进行分支合并时，如果可以，Git会使用`Fast forward`模式，删除分支后，分支历史信息会丢失
+
+>`--no-ff`表示禁用Fast forward模式，能看出曾做过合并
+
+## 删除分支
+
+>$ git branch -d <branch-name>
+  
+  ## 强行删除分支
+  
+  >$ git branch -D <branch-name>
+  
+  ## 查看分支合并图
+  
+  >$ git log --graph
+  
+  简介查看:
+  >$ git log --graph --pretty=oneline --abbrev-commit
 
