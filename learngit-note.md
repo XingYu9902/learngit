@@ -255,6 +255,100 @@ git log命令显示从最近到最远的提交日志,如果觉得显示的信息
   
   >$ git log --graph
   
-  简介查看:
+  简洁查看:
   >$ git log --graph --pretty=oneline --abbrev-commit
+  
+  # Bug分支
+  
+>假设场景：我们正在研发某产品A的2.0版本。
+
+1.我们在dev分支上研发2.0版本
+
+2.这时，有用户反映在1.0版本上出现了Bug需要修复
+
+3.这个时候我们就需要从dev分支上切换到有Bug的分支上
+
+4.正常情况下，我们需要先把dev分支上的工作先提交后在切换分支
+
+5.但是dev分支上的任务还没有完成，不能提交，所以我们需要先把dev存起来，使用stash
+
+6.切换到有Bug分支
+
+7.在有Bug的分支上新建一个分支Debug001
+
+8.在Debug001上修复Bug
+
+9.修复后在Bug分支上合并然后删除Debug001分支
+
+10.最后切回dev分支，调出存储，继续开始工作。
+
+## 保存工作现场
+
+>$ git stash
+
+## 查看保存的工作现场
+
+>$ git stash list
+
+## 恢复stash内容但不删除
+
+>$ git stasg apply
+
+## 删除stash
+
+>$ git stash drop
+
+## 恢复stash的同时删除
+
+>$ git stash pop
+
+### 小结
+
+修复bug时，我们会通过创建新的bug分支进行修复，然后合并，最后删除；
+
+git stash 会保存当前工作进度，会把工作区和暂存区的改动保存起来。
+
+当手头工作没有完成时，先把工作现场git stash一下，然后去修复bug，修复后，再git stash pop，回到工作现场；
+
+在master分支上修复的bug，想要合并到当前dev分支，可以用git cherry-pick <commit>命令，把bug提交的修改“复制”到当前分支，避免重复劳动。
+
+# Feature分支
+
+软件开发中，总有无穷无尽的新的功能要不断添加进来。添加一个新功能时，你肯定不希望因为一些实验性质的代码，把主分支搞乱了，所以，每添加一个新功能，最好新建一个feature分支，在上面开发，完成后，合并，最后，删除该feature分支。
+
+# 多人协作
+
+## 多人协作的工作模式
+
+> 首先，可以试图用>$ git push origin <branch-name>推送自己的修改；
+  
+>如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+
+>如果合并有冲突，则解决冲突，并在本地提交；
+
+>没有冲突或者解决掉冲突后，再用git push origin <branch-name>推送就能成功！
+  
+>如果git pull提示no tracking information，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream-to <branch-name> origin/<branch-name>。
+  
+查看远程库信息
+
+>$ git remote -v；
+
+>本地新建的分支如果不能推送到远程，对其他人就是不可见的；
+
+>从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
+
+>在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
+
+>建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
+
+>从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
+
+> **因为这里开始学习的时候比较混乱，所以可能在笔记上记录的啰嗦了一些，我也就不另外修改了，一并放过来**
+
+# Rebase
+
+>这一节没有参看廖雪峰老师的教程，因为没看懂。
+
+[Rebase详解](https://www.cnblogs.com/pinefantasy/articles/6287147.html)
 
